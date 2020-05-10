@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import com.sezo.moviecatalogservice.model.Catalog;
 import com.sezo.moviecatalogservice.model.Movie;
@@ -21,6 +22,10 @@ public class MovieCatalogController {
 	@Autowired
 	RestTemplate restTemplate;
 
+	@Autowired
+	WebClient.Builder webClientBuilder;
+	
+	
 	private static final String SERVICE_URL = "http://localhost:8082/movies/";
 
 	@RequestMapping("/{id}")
@@ -29,7 +34,9 @@ public class MovieCatalogController {
 		List<MovieRating> ratings = Arrays.asList(new MovieRating(4, 80), new MovieRating(3, 90));
 
 		return ratings.stream().map(r -> {
-			Movie movie = restTemplate.getForObject(SERVICE_URL + r.getMovieId(), Movie.class);
+			//Movie movie = restTemplate.getForObject(SERVICE_URL + r.getMovieId(), Movie.class);
+			Movie movie =webClientBuilder.build().get().uri(SERVICE_URL+r.getMovieId()).retrieve().bodyToMono(Movie.class).block();
+			
 			return new Catalog(movie.getName(), "Description", r.getRating());
 		}).collect(Collectors.toList());
 
