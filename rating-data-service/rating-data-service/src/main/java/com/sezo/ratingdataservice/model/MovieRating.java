@@ -4,6 +4,10 @@ public class MovieRating {
 	private int movieId;
 	private int rating;
 
+	public MovieRating() {
+
+	}
+	
 	public MovieRating(int movieId, int rating) {
 		this.movieId = movieId;
 		this.rating = rating;
