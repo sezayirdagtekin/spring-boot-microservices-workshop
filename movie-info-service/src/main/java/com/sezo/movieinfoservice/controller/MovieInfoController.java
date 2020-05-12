@@ -12,7 +12,7 @@ public class MovieInfoController {
 	@RequestMapping("/{id}")
 	public Movie getMovie(@PathVariable("id") int id) {
 
-		return new Movie(id, "Matrix");
+		return new Movie(id, "Matrix", "The Matrix is a 1999 science fiction action film");
 
 	}
 

@@ -33,7 +33,7 @@ public class MovieCatalogController {
 		return userRating.getRatings().stream().map(r -> {
 			Movie movie = restTemplate.getForObject("http://movie-info-service/movies/" + r.getMovieId(), Movie.class);
 
-			return new Catalog(movie.getName(), "Description", r.getRating());
+			return new Catalog(movie.getName(), movie.getDescription(), r.getRating());
 		}).collect(Collectors.toList());
 
 	}
